@@ -12,6 +12,5 @@ export const paresInput = (input: string) => {
 export const renderInput = (element: HTMLElement) => {
     element.innerHTML = `
       <textarea id="inputText" rows="10" cols="30" placeholder="Insert input here..."></textarea>`;
-    const inputElement = document.querySelector<HTMLTextAreaElement>('#inputText')!;
-    return inputElement
+    return document.querySelector<HTMLTextAreaElement>('#inputText')!
 }
