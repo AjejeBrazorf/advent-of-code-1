@@ -9,20 +9,25 @@ export const renderPart2 = (element: HTMLElement) => {
   </div>
 `;
     const buttonElement = document.querySelector<HTMLButtonElement>('#similarity')!;
-    const  calculateDistance = (list1: number[], list2: number[]): number => {
+    const calculateSimilarity = (list1: number[], list2: number[]): number => {
         const sortedList1 = list1.sort((a, b) => a - b);
-        const sortedList2 = list2.sort((a, b) => a - b);
 
-        return sortedList1.reduce((previousValue, currentValue, currentIndex) => {
-            return previousValue + Math.abs(currentValue - sortedList2[currentIndex],)
+        const similarityMap = new Map<number, number>();
+        list2.forEach((value) => {
+            const count = (similarityMap.get(value) || 0) / value ;
+            similarityMap.set(value, (count + 1) * value);
+        })
+
+        return sortedList1.reduce((previousValue, currentValue) => {
+            return previousValue + (similarityMap.get(currentValue) || 0)
         }, 0);
     }
 
     const updateSimilarity = (inputText: string) => {
         try {
             const { list1, list2 } = paresInput(inputText);
-            const distance = calculateDistance(list1, list2);
-            buttonElement.textContent = `Distance: ${distance}`;
+            const similarity = calculateSimilarity(list1, list2);
+            buttonElement.textContent = `Similarity: ${similarity}`;
         } catch (error) {
             buttonElement.textContent = 'Error parsing input';
         }
