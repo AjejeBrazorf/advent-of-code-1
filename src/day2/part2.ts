@@ -1,32 +1,20 @@
 import { paresInput } from './input';
-
+import {calculateSafeReports} from "./calculateSafeReports.ts";
 export const renderPart2 = (element: HTMLElement) => {
     element.innerHTML = `
   <div class="card">
-    <h2>Similarity:</h2>
-    <button id="similarity" type="button">Calculate similarity</button>
+    <h2>Problem Dampener :</h2>
+    <button id="safeReportsDampener" type="button">Calculate safe reports</button>
   </div>
 `;
-    const buttonElement = document.querySelector<HTMLButtonElement>('#similarity')!;
-    const calculateSimilarity = (list1: number[], list2: number[]): number => {
-        const sortedList1 = list1.sort((a, b) => a - b);
+    const buttonElement = document.querySelector<HTMLButtonElement>('#safeReportsDampener')!;
 
-        const similarityMap = new Map<number, number>();
-        list2.forEach((value) => {
-            const count = (similarityMap.get(value) || 0) / value ;
-            similarityMap.set(value, (count + 1) * value);
-        })
 
-        return sortedList1.reduce((previousValue, currentValue) => {
-            return previousValue + (similarityMap.get(currentValue) || 0)
-        }, 0);
-    }
-
-    const updateSimilarity = (inputText: string) => {
+    const updateSafeLevelsWithTolerance = (inputText: string) => {
         try {
-            const { list1, list2 } = paresInput(inputText);
-            const similarity = calculateSimilarity(list1, list2);
-            buttonElement.textContent = `Similarity: ${similarity}`;
+            const reports = paresInput(inputText);
+            const safeReports = calculateSafeReports(reports, {tolerance: true});
+            buttonElement.textContent = `safe reports with tolerance: ${safeReports}`;
         } catch (error) {
             buttonElement.textContent = 'Error parsing input';
         }
@@ -42,7 +30,7 @@ export const renderPart2 = (element: HTMLElement) => {
     }
     buttonElement.addEventListener('click', copyToClipboard);
 
-    return updateSimilarity
+    return updateSafeLevelsWithTolerance
 }
 
 

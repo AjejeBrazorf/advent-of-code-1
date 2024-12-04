@@ -14,7 +14,7 @@ export const renderDay1 = (element: HTMLElement) => {
     const updateDistance = renderPart1(document.querySelector<HTMLDivElement>('#part1')!);
     const updateSimilarity = renderPart2(document.querySelector<HTMLDivElement>('#part2')!);
 
-    inputElement.addEventListener('change', () => {
+    inputElement.addEventListener('input', () => {
         updateDistance(inputElement.value)
         updateSimilarity(inputElement.value)
     });
